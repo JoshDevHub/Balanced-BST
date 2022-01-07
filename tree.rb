@@ -7,17 +7,12 @@ require 'pry-byebug'
 class Tree
   attr_accessor :root
 
-  def initialize(data)
-    @root = build_tree(data)
+  def initialize(array)
+    sort_array = array.sort.uniq
+    @root = build_tree(sort_array, 0, (sort_array.length - 1))
   end
 
-  def build_tree(array, start_index = nil, end_index = nil)
-    # binding.pry
-    if start_index.nil? && end_index.nil?
-      array = array.sort.uniq
-      start_index = 0
-      end_index = array.length - 1
-    end
+  def build_tree(array, start_index, end_index)
     return nil if start_index > end_index
 
     mid_index = (start_index + end_index) / 2
