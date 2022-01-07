@@ -15,4 +15,12 @@ class Node
   def <=>(other)
     node.data <=> other.data
   end
+
+  def children?
+    left_child && right_child
+  end
+
+  def child?
+    left_child || right_child
+  end
 end
