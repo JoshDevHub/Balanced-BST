@@ -40,6 +40,12 @@ class Tree
     end
     curr_node
   end
+
+  def min_value_node(node)
+    current = node
+    current = current.left_child until current.left_child.nil?
+    current
+  end
 end
 
 # small test cases
