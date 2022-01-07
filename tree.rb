@@ -72,6 +72,18 @@ class Tree
     end
     curr_node
   end
+
+  def find(value, curr_node = root)
+    return if curr_node.nil?
+
+    return curr_node if curr_node.data == value
+
+    if curr_node.data > value
+      find(value, curr_node.left_child)
+    else
+      find(value, curr_node.right_child)
+    end
+  end
 end
 
 # small test cases
@@ -79,7 +91,7 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 small_test = [1, 2, 3, 4]
 my_tree = Tree.new(test_array)
 my_tree.insert(24)
-my_tree.delete(4)
-p my_tree.root
+p my_tree.find(12)
+# p my_tree.root
 
 my_tree.pretty_print
