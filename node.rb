@@ -16,11 +16,7 @@ class Node
     node.data <=> other.data
   end
 
-  def children?
+  def two_children?
     left_child && right_child
-  end
-
-  def child?
-    left_child || right_child
   end
 end
