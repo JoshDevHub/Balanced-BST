@@ -21,10 +21,25 @@ class Tree
     root_node.right_child = build_tree(array, (mid_index + 1), end_index)
     root_node
   end
+
+  def insert(value, curr_node = root)
+    # binding.pry
+    return Node.new(value) if curr_node.nil?
+
+    return curr_node if curr_node.data == value
+
+    if curr_node.data < value
+      curr_node.right_child = insert(value, curr_node.right_child)
+    else
+      curr_node.left_child = insert(value, curr_node.left_child)
+    end
+    curr_node
+  end
 end
 
 # small test cases
 test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 small_test = [1, 2, 3, 4]
-my_tree = Tree.new(test_array)
+my_tree = Tree.new(small_test)
+my_tree.insert(0)
 p my_tree.root
