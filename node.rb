@@ -2,8 +2,7 @@
 
 # class for each point on a data tree
 class Node
-  attr_reader :data
-  attr_accessor :left_child, :right_child
+  attr_accessor :data, :left_child, :right_child
 
   include Comparable
 
