@@ -49,6 +49,7 @@ class Tree
 
   # TODO: needs more testing
   # TODO: work on length & ABC
+  # FIXME: doesn't currently work on root node
   def delete(value, curr_node = root)
     return curr_node if curr_node.nil?
 
