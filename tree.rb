@@ -52,20 +52,18 @@ class Tree
   def delete(value, curr_node = root)
     return curr_node if curr_node.nil?
 
-    if value < curr_node.data
+    if value == curr_node.data && curr_node.two_children?
+      temp = min_value_node(curr_node.right_child)
+      curr_node.data = temp.data
+      curr_node.right_child = temp.right_child
+    elsif value == curr_node.data
+      temp = curr_node.right_child || curr_node.left_child
+      curr_node = nil
+      temp
+    elsif value < curr_node.data
       curr_node.left_child = delete(value, curr_node.left_child)
     elsif value > curr_node.data
       curr_node.right_child = delete(value, curr_node.right_child)
-    else
-      if curr_node.two_children?
-        temp = min_value_node(curr_node.right_child)
-        curr_node.data = temp.data
-        curr_node.right_child = temp.right_child
-      else
-        temp = curr_node.right_child || curr_node.left_child
-        curr_node = nil
-        temp
-      end
     end
     curr_node
   end
@@ -88,7 +86,7 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 small_test = [1, 2, 3, 4]
 my_tree = Tree.new(test_array)
 my_tree.insert(24)
-my_tree.delete(67)
+my_tree.delete(4)
 p my_tree.root
 
 my_tree.pretty_print
