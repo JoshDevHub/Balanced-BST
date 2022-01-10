@@ -115,6 +115,17 @@ class Tree
     collection << preorder(node.right_child, &block)
     collection.flatten.compact
   end
+
+  def postorder(node = root, &block)
+    return if node.nil?
+
+    collection = []
+    collection << postorder(node.left_child, &block)
+    collection << postorder(node.right_child, &block)
+    block.call(node) if block_given?
+    collection << node.data
+    collection.flatten.compact
+  end
 end
 
 # small test cases
@@ -122,6 +133,6 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 small_test = [1, 2, 3, 4, 5]
 my_tree = Tree.new(test_array)
 my_tree.insert(24)
-p my_tree.preorder
+my_tree.postorder { |e| p e.data * 2 }
 
 my_tree.pretty_print
