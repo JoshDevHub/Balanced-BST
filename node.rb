@@ -13,7 +13,7 @@ class Node
   end
 
   def <=>(other)
-    node.data <=> other.data
+    data <=> other
   end
 
   def two_children?

@@ -31,9 +31,9 @@ class Tree
   def insert(value, curr_node = root)
     return Node.new(value) if curr_node.nil?
 
-    return curr_node if curr_node.data == value
+    return curr_node if curr_node == value
 
-    if curr_node.data < value
+    if curr_node < value
       curr_node.right_child = insert(value, curr_node.right_child)
     else
       curr_node.left_child = insert(value, curr_node.left_child)
@@ -53,17 +53,17 @@ class Tree
   def delete(value, curr_node = root)
     return curr_node if curr_node.nil?
 
-    if value == curr_node.data && curr_node.two_children?
+    if value == curr_node && curr_node.two_children?
       temp = min_value_node(curr_node.right_child)
       curr_node.data = temp.data
       curr_node.right_child = temp.right_child
-    elsif value == curr_node.data
+    elsif value == curr_node
       temp = curr_node.right_child || curr_node.left_child
       curr_node = nil
       temp
-    elsif value < curr_node.data
+    elsif value < curr_node
       curr_node.left_child = delete(value, curr_node.left_child)
-    elsif value > curr_node.data
+    elsif value > curr_node
       curr_node.right_child = delete(value, curr_node.right_child)
     end
     curr_node
@@ -72,9 +72,9 @@ class Tree
   def find(value, curr_node = root)
     return if curr_node.nil?
 
-    return curr_node if curr_node.data == value
+    return curr_node if curr_node == value
 
-    if curr_node.data > value
+    if curr_node > value
       find(value, curr_node.left_child)
     else
       find(value, curr_node.right_child)
