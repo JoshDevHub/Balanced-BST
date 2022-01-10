@@ -129,11 +129,7 @@ class Tree
   end
 
   def height(node = root)
-    # placeholder
-    # binding.pry
-    return 0 if node.nil?
-
-    return 0 unless node.left_child || node.right_child
+    return 0 if node.nil? || node.no_children?
 
     left_height = height(node.left_child)
     right_height = height(node.right_child)

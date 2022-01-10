@@ -16,6 +16,10 @@ class Node
     data <=> other
   end
 
+  def no_children?
+    left_child.nil? && right_child.nil?
+  end
+
   def two_children?
     left_child && right_child
   end
