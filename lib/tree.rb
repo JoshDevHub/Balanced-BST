@@ -161,17 +161,3 @@ class Tree
     self.root = build_tree(new_array, 0, (new_array.length - 1))
   end
 end
-
-# small test cases
-test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-small_test = [1, 2, 3, 4, 5]
-my_tree = Tree.new(test_array)
-my_tree.insert(24)
-my_tree.insert(50)
-my_tree.insert(69)
-# my_tree.insert(1000)
-my_tree.rebalance
-p my_tree.balanced?
-p my_tree.root
-
-my_tree.pretty_print
