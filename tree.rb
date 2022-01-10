@@ -80,6 +80,19 @@ class Tree
       find(value, curr_node.right_child)
     end
   end
+
+  def level_order
+    queue = [root]
+    collection = []
+    until queue.empty?
+      curr_node = queue.shift
+      queue << curr_node.left_child unless curr_node.left_child.nil?
+      queue << curr_node.right_child unless curr_node.right_child.nil?
+      yield(curr_node) if block_given?
+      collection << curr_node.data
+    end
+    collection
+  end
 end
 
 # small test cases
@@ -87,7 +100,6 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 small_test = [1, 2, 3, 4]
 my_tree = Tree.new(test_array)
 my_tree.insert(24)
-my_tree.delete(8)
-p my_tree.root
+my_tree.level_order { |e| p e.data }
 
 my_tree.pretty_print
