@@ -43,7 +43,7 @@ class Tree
 
   def min_value_node(node)
     current = node
-    current = current.left_child until current.left_child.nil?
+    current = current.left_child while current.left_child
     current
   end
 
@@ -86,8 +86,8 @@ class Tree
     collection = []
     until queue.empty?
       curr_node = queue.shift
-      queue << curr_node.left_child unless curr_node.left_child.nil?
-      queue << curr_node.right_child unless curr_node.right_child.nil?
+      queue << curr_node.left_child if curr_node.left_child
+      queue << curr_node.right_child if curr_node.right_child
       yield(curr_node) if block_given?
       collection << curr_node.data
     end
@@ -98,10 +98,10 @@ class Tree
     return if node.nil?
 
     collection = []
-    collection << inorder(node.left_child, &block) if node.left_child?
+    collection << inorder(node.left_child, &block) if node.left_child
     block.call(node) if block_given?
     collection << node.data
-    collection << inorder(node.right_child, &block) if node.right_child?
+    collection << inorder(node.right_child, &block) if node.right_child
     collection.flatten
   end
 
@@ -111,24 +111,24 @@ class Tree
     collection = []
     block.call(node) if block_given?
     collection << node.data
-    collection << preorder(node.left_child, &block)
-    collection << preorder(node.right_child, &block)
-    collection.flatten.compact
+    collection << preorder(node.left_child, &block) if node.left_child
+    collection << preorder(node.right_child, &block) if node.right_child
+    collection.flatten
   end
 
   def postorder(node = root, &block)
     return if node.nil?
 
     collection = []
-    collection << postorder(node.left_child, &block)
-    collection << postorder(node.right_child, &block)
+    collection << postorder(node.left_child, &block) if node.left_child
+    collection << postorder(node.right_child, &block) if node.right_child
     block.call(node) if block_given?
     collection << node.data
-    collection.flatten.compact
+    collection.flatten
   end
 
   def height(node = root)
-
+    # placeholder
   end
 end
 
