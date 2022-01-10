@@ -28,4 +28,6 @@ puts my_tree.balanced? # -> false
 my_tree.rebalance
 puts my_tree.balanced? # -> true
 
+each_traversal(my_tree, &print_node_data)
+
 my_tree.pretty_print
