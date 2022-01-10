@@ -98,11 +98,11 @@ class Tree
     return if node.nil?
 
     collection = []
-    collection << inorder(node.left_child, &block)
+    collection << inorder(node.left_child, &block) if node.left_child?
     block.call(node) if block_given?
     collection << node.data
-    collection << inorder(node.right_child, &block)
-    collection.flatten.compact
+    collection << inorder(node.right_child, &block) if node.right_child?
+    collection.flatten
   end
 
   def preorder(node = root, &block)
