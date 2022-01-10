@@ -2,7 +2,30 @@
 
 require_relative 'lib/tree'
 
-test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+random_nums = (Array.new(15) { rand(1..100) })
+my_tree = Tree.new(random_nums)
 
-new_tree = Tree.new(test_array)
-new_tree.pretty_print
+puts my_tree.balanced? # -> true
+
+print_node_data = proc { |node| puts node.data }
+def each_traversal(tree, &print_block)
+  puts 'inorder'
+  tree.inorder(&print_block)
+  puts 'preorder'
+  tree.preorder(&print_block)
+  puts 'postorder'
+  tree.postorder(&print_block)
+  puts 'level order'
+  tree.level_order(&print_block)
+end
+
+each_traversal(my_tree, &print_node_data)
+
+5.times do
+  my_tree.insert(rand(100..200))
+end
+puts my_tree.balanced? # -> false
+my_tree.rebalance
+puts my_tree.balanced? # -> true
+
+my_tree.pretty_print
