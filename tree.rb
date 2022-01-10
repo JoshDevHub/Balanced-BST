@@ -47,26 +47,26 @@ class Tree
     current
   end
 
-  # TODO: needs more testing
   # TODO: work on length & ABC
-  # FIXME: doesn't currently work on root node
   def delete(value, curr_node = root)
+    # Base Case
     return curr_node if curr_node.nil?
 
-    if value == curr_node && curr_node.two_children?
-      temp = min_value_node(curr_node.right_child)
-      curr_node.data = temp.data
-      curr_node.right_child = temp.right_child
-    elsif value == curr_node
+    # If node has two children
+    if curr_node == value && curr_node.two_children?
+      inorder_succ = min_value_node(curr_node.right_child)
+      curr_node.data = inorder_succ.data
+      curr_node.right_child = delete(inorder_succ.data, curr_node.right_child)
+    # If node has one child or no children
+    elsif curr_node == value
       temp = curr_node.right_child || curr_node.left_child
       curr_node = nil
-      temp
-    elsif value < curr_node
-      curr_node.left_child = delete(value, curr_node.left_child)
-    elsif value > curr_node
-      curr_node.right_child = delete(value, curr_node.right_child)
+    # Continue looking for node
+    else
+      curr_node.left_child = delete(value, curr_node.left_child) if curr_node > value
+      curr_node.right_child = delete(value, curr_node.right_child) if curr_node < value
     end
-    curr_node
+    temp || curr_node
   end
 
   def find(value, curr_node = root)
@@ -87,7 +87,7 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 small_test = [1, 2, 3, 4]
 my_tree = Tree.new(test_array)
 my_tree.insert(24)
-my_tree.delete(4)
+my_tree.delete(8)
 p my_tree.root
 
 my_tree.pretty_print
