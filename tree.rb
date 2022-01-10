@@ -3,6 +3,7 @@
 require_relative 'node'
 require 'pry-byebug'
 
+# rubocop: disable Metrics/ClassLength
 # class that holds logic for creating balanced binary search trees
 class Tree
   attr_accessor :root
@@ -129,6 +130,14 @@ class Tree
 
   def height(node = root)
     # placeholder
+    # binding.pry
+    return 0 if node.nil?
+
+    return 0 unless node.left_child || node.right_child
+
+    left_height = height(node.left_child)
+    right_height = height(node.right_child)
+    1 + [left_height, right_height].max
   end
 end
 
@@ -137,6 +146,6 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 small_test = [1, 2, 3, 4, 5]
 my_tree = Tree.new(test_array)
 my_tree.insert(24)
-p my_tree.inorder
+my_tree.inorder { |node| puts my_tree.height(node) }
 
 my_tree.pretty_print
