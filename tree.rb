@@ -104,13 +104,24 @@ class Tree
     collection << inorder(node.right_child, &block)
     collection.flatten.compact
   end
+
+  def preorder(node = root, &block)
+    return if node.nil?
+
+    collection = []
+    block.call(node) if block_given?
+    collection << node.data
+    collection << preorder(node.left_child, &block)
+    collection << preorder(node.right_child, &block)
+    collection.flatten.compact
+  end
 end
 
 # small test cases
 test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-small_test = [1, 2, 3, 4]
-my_tree = Tree.new(small_test)
+small_test = [1, 2, 3, 4, 5]
+my_tree = Tree.new(test_array)
 my_tree.insert(24)
-my_tree.inorder
+p my_tree.preorder
 
 my_tree.pretty_print
