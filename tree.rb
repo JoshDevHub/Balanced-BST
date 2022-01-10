@@ -135,6 +135,19 @@ class Tree
     right_height = height(node.right_child)
     1 + [left_height, right_height].max
   end
+
+  def depth(target, node = root)
+    return nil if target.nil? || !find(target)
+
+    return 0 if node == target
+
+    edge_count = if target > node.data
+                   depth(target, node.right_child)
+                 else
+                   depth(target, node.left_child)
+                 end
+    edge_count + 1
+  end
 end
 
 # small test cases
@@ -142,6 +155,6 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 small_test = [1, 2, 3, 4, 5]
 my_tree = Tree.new(test_array)
 my_tree.insert(24)
-my_tree.inorder { |node| puts my_tree.height(node) }
+p my_tree.depth(my_tree.find(10))
 
 my_tree.pretty_print
