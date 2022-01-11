@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'node'
-require 'pry-byebug'
 
 # rubocop: disable Metrics/ClassLength
 # class that holds logic for creating balanced binary search trees
@@ -48,24 +47,26 @@ class Tree
     current
   end
 
-  # TODO: work on length & ABC
   def delete(value, curr_node = root)
-    # Base Case
     return curr_node if curr_node.nil?
 
-    # If node has two children
-    if curr_node == value && curr_node.two_children?
-      inorder_succ = min_value_node(curr_node.right_child)
-      curr_node.data = inorder_succ.data
-      curr_node.right_child = delete(inorder_succ.data, curr_node.right_child)
-    # If node has one child or no children
-    elsif curr_node == value
-      temp = curr_node.right_child || curr_node.left_child
-      curr_node = nil
-    # Continue looking for node
+    if curr_node == value
+      curr_node = delete_child_helper(curr_node)
     else
       curr_node.left_child = delete(value, curr_node.left_child) if curr_node > value
       curr_node.right_child = delete(value, curr_node.right_child) if curr_node < value
+    end
+    curr_node
+  end
+
+  def delete_child_helper(curr_node)
+    if curr_node.two_children?
+      inorder_succ = min_value_node(curr_node.right_child)
+      curr_node.data = inorder_succ.data
+      curr_node.right_child = delete(inorder_succ.data, curr_node.right_child)
+    else
+      temp = curr_node.right_child || curr_node.left_child
+      curr_node = nil
     end
     temp || curr_node
   end
