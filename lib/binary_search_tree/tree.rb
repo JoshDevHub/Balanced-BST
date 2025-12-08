@@ -90,16 +90,19 @@ module BinarySearchTree
       end
     end
 
-    def level_order(node = root)
-      queue = [node]
+    def level_order(&block)
+      block ||= ->(value) { value }
+
       collection = []
+      queue = [@root]
       until queue.empty?
         curr_node = queue.shift
+        collection << block.call(curr_node.data)
+
         queue << curr_node.left_child if curr_node.left_child
         queue << curr_node.right_child if curr_node.right_child
-        yield(curr_node) if block_given?
-        collection << curr_node.data
       end
+
       collection
     end
 

@@ -100,5 +100,37 @@ module BinarySearchTree
         expect(tree.include?(1)).to be true
       end
     end
+
+    describe "#level_order" do
+      # this tree is structured like:
+      #
+      # │       ┌── 8
+      # │   ┌── 7
+      # │   │   └── 6
+      # └── 5
+      #     │   ┌── 4
+      #     └── 3
+      #         └── 2
+      #             └── 1
+      # level order traversal should proceed through each layer of children
+      subject(:tree) { described_class.build([1, 2, 3, 4, 5, 6, 7, 8]) }
+
+      context "without any arugments" do
+        it "returns an array of the values in level order" do
+          level_order_elements = [5, 3, 7, 2, 4, 6, 8, 1]
+
+          expect(tree.level_order).to eq level_order_elements
+        end
+      end
+
+      context "when given a block" do
+        it "returns an array with each value having run through the block in level order" do
+          block = ->(value) { value**2 }
+          expected_values = [25, 9, 49, 4, 16, 36, 64, 1]
+
+          expect(tree.level_order(&block)).to eq expected_values
+        end
+      end
+    end
   end
 end
