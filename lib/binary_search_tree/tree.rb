@@ -78,15 +78,15 @@ module BinarySearchTree
       curr_node
     end
 
-    def find(value, curr_node = root)
-      return if curr_node.nil?
+    def include?(value, curr_node = @root)
+      return false if curr_node.nil?
 
-      return curr_node if curr_node == value
+      return true if curr_node.data == value
 
-      if curr_node > value
-        find(value, curr_node.left_child)
+      if curr_node.data > value
+        include?(value, curr_node.left_child)
       else
-        find(value, curr_node.right_child)
+        include?(value, curr_node.right_child)
       end
     end
 

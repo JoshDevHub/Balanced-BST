@@ -84,5 +84,21 @@ module BinarySearchTree
         end
       end
     end
+
+    describe "#include?" do
+      subject(:tree) { described_class.build([1, 2, 3]) }
+
+      it "returns false when the structure does not contain the item" do
+        expect(tree.include?(5)).to be false
+      end
+
+      it "returns true when the structure includes the item in the right subtree" do
+        expect(tree.include?(3)).to be true
+      end
+
+      it "returns true when the structure includes the item in the left subtree" do
+        expect(tree.include?(1)).to be true
+      end
+    end
   end
 end
