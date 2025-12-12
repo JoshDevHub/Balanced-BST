@@ -184,5 +184,46 @@ module BinarySearchTree
         expect(Traversal).to have_received(:new).with(root, &:succ)
       end
     end
+
+    describe "#height" do
+      # this tree is structured like:
+      #
+      # │       ┌── 8
+      # │   ┌── 7
+      # │   │   └── 6
+      # └── 5
+      #     │   ┌── 4
+      #     └── 3
+      #         └── 2
+      #             └── 1
+      #
+      subject(:tree) { described_class.build([1, 2, 3, 4, 5, 6, 7, 8]) }
+
+      it "returns the height of the given target node when the value is in the tree", :aggregate_failures do
+        expect(tree.height(8)).to eq 0
+        expect(tree.height(5)).to eq 3
+        expect(tree.height(7)).to eq 1
+        expect(tree.height(3)).to eq 2
+      end
+
+      it "returns `nil` when the value is not in the tree" do
+        expect(tree.height(10)).to be_nil
+      end
+    end
+
+    describe "#depth" do
+      subject(:tree) { described_class.build([1, 2, 3, 4, 5, 6, 7, 8]) }
+
+      it "returns the depth of the node with the given value if the value is in the tree", :aggregate_failures do
+        expect(tree.depth(5)).to eq 0
+        expect(tree.depth(3)).to eq 1
+        expect(tree.depth(8)).to eq 2
+        expect(tree.depth(1)).to eq 3
+      end
+
+      it "returns `nil` when the given value is not in the tree" do
+        expect(tree.depth(10)).to be_nil
+      end
+    end
   end
 end

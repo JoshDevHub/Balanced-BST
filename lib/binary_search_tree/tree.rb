@@ -97,30 +97,22 @@ module BinarySearchTree
 
     def postorder(&) = Traversal.new(@root, &).postorder
 
-    def height(node = root)
-      return 0 if node.nil? || node.no_children?
+    def height(value)
+      target = find_node(value)
+      return if target.nil?
 
-      left_height = height(node.left_child)
-      right_height = height(node.right_child)
-      1 + [left_height, right_height].max
+      calculate_height(target)
     end
 
-    def depth(target, node = root)
-      return nil if target.nil? || !find(target)
+    def depth(value)
+      distance = 0
+      find_node(value) { distance += 1 } || return
 
-      return 0 if node == target
-
-      edge_count = if target > node.data
-                    depth(target, node.right_child)
-                  else
-                    depth(target, node.left_child)
-                  end
-      edge_count + 1
+      distance
     end
 
     def balanced?
-      subtree_diff = height(root.left_child) - height(root.right_child)
-      subtree_diff.abs <= 1
+      calculate_balance(@root)
     end
 
     def rebalance
@@ -128,6 +120,30 @@ module BinarySearchTree
 
       new_array = inorder
       self.root = build_tree(new_array, 0, (new_array.length - 1))
+    end
+
+    private
+
+    def find_node(value, node = @root, &)
+      return if node.nil?
+
+      return node if value == node.data
+
+      yield if block_given?
+      if value > node.data
+        find_node(value, node.right_child, &)
+      else
+        find_node(value, node.left_child, &)
+      end
+    end
+
+    def calculate_height(node)
+      return -1 if node.nil?
+
+      left_height = calculate_height(node.left_child)
+      right_height = calculate_height(node.right_child)
+
+      [left_height, right_height].max + 1
     end
   end
 end
