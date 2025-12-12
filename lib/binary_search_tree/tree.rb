@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop: disable Metrics/ClassLength
 module BinarySearchTree
   class Tree
     class << self
@@ -90,54 +89,13 @@ module BinarySearchTree
       end
     end
 
-    def level_order(&block)
-      block ||= ->(value) { value }
+    def level_order(&) = Traversal.new(@root, &).level_order
 
-      collection = []
-      queue = [@root]
-      until queue.empty?
-        curr_node = queue.shift
-        collection << block.call(curr_node.data)
+    def inorder(&) = Traversal.new(@root, &).inorder
 
-        queue << curr_node.left_child if curr_node.left_child
-        queue << curr_node.right_child if curr_node.right_child
-      end
+    def preorder(&) = Traversal.new(@root, &).preorder
 
-      collection
-    end
-
-    def inorder(node = @root, &block)
-      return if node.nil?
-
-      collection = []
-      collection << inorder(node.left_child, &block) if node.left_child
-      block.call(node) if block_given?
-      collection << node.data
-      collection << inorder(node.right_child, &block) if node.right_child
-      collection.flatten
-    end
-
-    def preorder(node = root, &block)
-      return if node.nil?
-
-      collection = []
-      block.call(node) if block_given?
-      collection << node.data
-      collection << preorder(node.left_child, &block) if node.left_child
-      collection << preorder(node.right_child, &block) if node.right_child
-      collection.flatten
-    end
-
-    def postorder(node = root, &block)
-      return if node.nil?
-
-      collection = []
-      collection << postorder(node.left_child, &block) if node.left_child
-      collection << postorder(node.right_child, &block) if node.right_child
-      block.call(node) if block_given?
-      collection << node.data
-      collection.flatten
-    end
+    def postorder(&) = Traversal.new(@root, &).postorder
 
     def height(node = root)
       return 0 if node.nil? || node.no_children?
@@ -172,5 +130,4 @@ module BinarySearchTree
       self.root = build_tree(new_array, 0, (new_array.length - 1))
     end
   end
-  # rubocop: enable Metrics/ClassLength
 end

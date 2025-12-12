@@ -102,34 +102,86 @@ module BinarySearchTree
     end
 
     describe "#level_order" do
-      # this tree is structured like:
-      #
-      # │       ┌── 8
-      # │   ┌── 7
-      # │   │   └── 6
-      # └── 5
-      #     │   ┌── 4
-      #     └── 3
-      #         └── 2
-      #             └── 1
-      # level order traversal should proceed through each layer of children
-      subject(:tree) { described_class.build([1, 2, 3, 4, 5, 6, 7, 8]) }
+      subject(:tree) { described_class.new(root) }
 
-      context "without any arugments" do
-        it "returns an array of the values in level order" do
-          level_order_elements = [5, 3, 7, 2, 4, 6, 8, 1]
+      let(:root) { Node.new(10) }
+      let(:traversal) { instance_double(Traversal, level_order: []) }
 
-          expect(tree.level_order).to eq level_order_elements
-        end
+      before do
+        allow(Traversal).to receive(:new).with(root).and_return(traversal)
       end
 
-      context "when given a block" do
-        it "returns an array with each value having run through the block in level order" do
-          block = ->(value) { value**2 }
-          expected_values = [25, 9, 49, 4, 16, 36, 64, 1]
+      it "creates a traversal and calls `#level_order` on it" do
+        tree.level_order
+        expect(traversal).to have_received(:level_order)
+      end
 
-          expect(tree.level_order(&block)).to eq expected_values
-        end
+      it "forwards blocks to the new traversal" do
+        tree.level_order(&:succ)
+        expect(Traversal).to have_received(:new).with(root, &:succ)
+      end
+    end
+
+    describe "#inorder" do
+      subject(:tree) { described_class.new(root) }
+
+      let(:root) { Node.new(10) }
+      let(:traversal) { instance_double(Traversal, inorder: []) }
+
+      before do
+        allow(Traversal).to receive(:new).with(root).and_return(traversal)
+      end
+
+      it "creates a traversal and calls `#inorder` on it" do
+        tree.inorder
+        expect(traversal).to have_received(:inorder)
+      end
+
+      it "forwards blocks to the new traversal" do
+        tree.inorder(&:succ)
+        expect(Traversal).to have_received(:new).with(root, &:succ)
+      end
+    end
+
+    describe "#preorder" do
+      subject(:tree) { described_class.new(root) }
+
+      let(:root) { Node.new(10) }
+      let(:traversal) { instance_double(Traversal, preorder: []) }
+
+      before do
+        allow(Traversal).to receive(:new).with(root).and_return(traversal)
+      end
+
+      it "creates a traversal and calls `#preorder` on it" do
+        tree.preorder
+        expect(traversal).to have_received(:preorder)
+      end
+
+      it "forwards blocks to the new traversal" do
+        tree.preorder(&:succ)
+        expect(Traversal).to have_received(:new).with(root, &:succ)
+      end
+    end
+
+    describe "#postorder" do
+      subject(:tree) { described_class.new(root) }
+
+      let(:root) { Node.new(10) }
+      let(:traversal) { instance_double(Traversal, postorder: []) }
+
+      before do
+        allow(Traversal).to receive(:new).with(root).and_return(traversal)
+      end
+
+      it "creates a traversal and calls `#postorder` on it" do
+        tree.postorder
+        expect(traversal).to have_received(:postorder)
+      end
+
+      it "forwards blocks to the new traversal" do
+        tree.postorder(&:succ)
+        expect(Traversal).to have_received(:new).with(root, &:succ)
       end
     end
   end
