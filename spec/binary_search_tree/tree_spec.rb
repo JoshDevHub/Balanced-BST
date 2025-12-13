@@ -225,5 +225,44 @@ module BinarySearchTree
         expect(tree.depth(10)).to be_nil
       end
     end
+
+    describe "#balanced?" do
+      subject(:tree) { described_class.build([1, 2, 3]) }
+
+      context "when the tree is balanced" do
+        it "returns true" do
+          expect(tree.balanced?).to be true
+        end
+      end
+
+      context "when the tree is not balanced" do
+        before do
+          # insert a few nodes greater (or less than) all existing nodes to quickly create an imbalance
+          tree.insert(100)
+          tree.insert(101)
+          tree.insert(102)
+        end
+
+        it "returns false" do
+          expect(tree.balanced?).to be false
+        end
+      end
+
+      context "with an empty tree" do
+        subject(:empty_tree) { described_class.new }
+
+        it "returns true" do
+          expect(empty_tree.balanced?).to be true
+        end
+      end
+
+      context "with a tree containing only one node" do
+        subject(:tree) { described_class.new(Node.new(1)) }
+
+        it "returns true" do
+          expect(tree.balanced?).to be true
+        end
+      end
+    end
   end
 end

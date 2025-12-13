@@ -24,7 +24,7 @@ module BinarySearchTree
       end
     end
 
-    def initialize(root)
+    def initialize(root = nil)
       @root = root
     end
 
@@ -77,16 +77,8 @@ module BinarySearchTree
       curr_node
     end
 
-    def include?(value, curr_node = @root)
-      return false if curr_node.nil?
-
-      return true if curr_node.data == value
-
-      if curr_node.data > value
-        include?(value, curr_node.left_child)
-      else
-        include?(value, curr_node.right_child)
-      end
+    def include?(value)
+      !find_node(value, @root).nil?
     end
 
     def level_order(&) = Traversal.new(@root, &).level_order
@@ -112,7 +104,8 @@ module BinarySearchTree
     end
 
     def balanced?
-      calculate_balance(@root)
+      calculate_height(@root) { |left, right| return false if (left - right).abs > 1 }
+      true
     end
 
     def rebalance
@@ -137,11 +130,12 @@ module BinarySearchTree
       end
     end
 
-    def calculate_height(node)
+    def calculate_height(node, &)
       return -1 if node.nil?
 
-      left_height = calculate_height(node.left_child)
-      right_height = calculate_height(node.right_child)
+      left_height = calculate_height(node.left_child, &)
+      right_height = calculate_height(node.right_child, &)
+      yield(left_height, right_height) if block_given?
 
       [left_height, right_height].max + 1
     end
