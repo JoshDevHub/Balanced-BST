@@ -264,5 +264,27 @@ module BinarySearchTree
         end
       end
     end
+
+    describe "#rebalance" do
+      subject(:tree) { described_class.build([1, 2, 3]) }
+
+      context "when the tree is unbalanced" do
+        before do
+          tree.insert(100)
+          tree.insert(101)
+          tree.insert(102)
+        end
+
+        it "rebalances the tree" do
+          expect { tree.rebalance }.to change(tree, :balanced?).from(false).to(true)
+        end
+      end
+
+      context "when the tree is balanced" do
+        it "does not change the balance of the tree" do
+          expect { tree.rebalance }.not_to change(tree, :balanced?)
+        end
+      end
+    end
   end
 end

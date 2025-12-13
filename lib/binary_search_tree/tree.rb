@@ -10,8 +10,6 @@ module BinarySearchTree
         new(root)
       end
 
-      private
-
       def recursively_build_root(array)
         return if array.empty?
 
@@ -111,8 +109,7 @@ module BinarySearchTree
     def rebalance
       return if balanced?
 
-      new_array = inorder
-      self.root = build_tree(new_array, 0, (new_array.length - 1))
+      @root = self.class.recursively_build_root(inorder)
     end
 
     private
