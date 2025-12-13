@@ -1,7 +1,5 @@
 require "spec_helper"
 
-require_relative "../../lib/binary_search_tree"
-
 module BinarySearchTree
   RSpec.describe Node do
     describe "leaf?" do

@@ -1,7 +1,5 @@
 require "spec_helper"
 
-require_relative "../../lib/binary_search_tree"
-
 module BinarySearchTree
   # TRAVERSAL TESTS
   # this tree is structured like:
