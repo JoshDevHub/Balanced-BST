@@ -39,45 +39,21 @@ module BinarySearchTree
 
       return curr_node if curr_node.data == value
 
-      if curr_node.data < value
-        curr_node.right_child = insert(value, curr_node.right_child)
-      else
-        curr_node.left_child = insert(value, curr_node.left_child)
-      end
-      curr_node
-    end
-
-    def min_value_node(node)
-      current = node
-      current = current.left_child while current.left_child
-      current
+      recursively_set(method: :insert, value:, node: curr_node)
     end
 
     def delete(value, curr_node = @root)
-      return curr_node if curr_node.nil?
+      return curr_node unless curr_node
+      return recursively_set(method: :delete, value:, node: curr_node) if curr_node.data != value
+      return curr_node.left_child || curr_node.right_child unless curr_node.two_children?
 
-      return delete_child_helper(curr_node) if curr_node.data == value
-
-      if curr_node.data > value
-        curr_node.left_child = delete(value, curr_node.left_child)
-      else
-        curr_node.right_child = delete(value, curr_node.right_child)
-      end
-      curr_node
-    end
-
-    def delete_child_helper(curr_node)
-      return curr_node.right_child || curr_node.left_child unless curr_node.two_children?
-
-      inorder_succ = min_value_node(curr_node.right_child)
+      inorder_succ = curr_node.succ
       curr_node.data = inorder_succ.data
       curr_node.right_child = delete(inorder_succ.data, curr_node.right_child)
       curr_node
     end
 
-    def include?(value)
-      !find_node(value, @root).nil?
-    end
+    def include?(value) = !find_node(value, @root).nil?
 
     def level_order(&) = Traversal.new(@root, &).level_order
 
@@ -113,6 +89,16 @@ module BinarySearchTree
     end
 
     private
+
+    def recursively_set(method:, value:, node:)
+      if node.data > value
+        node.left_child = public_send(method, value, node.left_child)
+      else
+        node.right_child = public_send(method, value, node.right_child)
+      end
+
+      node
+    end
 
     def find_node(value, node = @root, &)
       return if node.nil?
