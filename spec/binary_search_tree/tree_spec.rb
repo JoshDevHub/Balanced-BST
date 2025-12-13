@@ -1,7 +1,5 @@
 require "spec_helper"
 
-require_relative "../../lib/binary_search_tree"
-
 module BinarySearchTree
   RSpec.describe Tree do
     describe "::build" do
@@ -235,12 +233,39 @@ module BinarySearchTree
         end
       end
 
-      context "when the tree is not balanced" do
+      context "when the root is not balanced" do
         before do
           # insert a few nodes greater (or less than) all existing nodes to quickly create an imbalance
           tree.insert(100)
           tree.insert(101)
           tree.insert(102)
+        end
+
+        it "returns false" do
+          expect(tree.balanced?).to be false
+        end
+      end
+
+      context "when there's an 'even' imbalance" do
+        # tree structured like:
+        # │           ┌── 5
+        # │       ┌── 4
+        # │   ┌── 3
+        # └── 2
+        #     └── 1
+        #         └── -1
+        #             └── -2
+        # Even though the root node's heights are even in both subtrees,
+        #   this tree is unbalanced. This is because the nodes with values
+        #   `3` and `1` are unbalanced, and unbalance at any node means the
+        #   entire tree is unbalanced
+        subject(:tree) { described_class.build([1, 2, 3]) }
+
+        before do
+          tree.insert(-1)
+          tree.insert(-2)
+          tree.insert(4)
+          tree.insert(5)
         end
 
         it "returns false" do
